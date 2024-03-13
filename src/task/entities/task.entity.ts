@@ -1,4 +1,4 @@
-import { Todo } from '../../todo/entities/todo.entity';
+import { Todo } from 'src/todo/entities/todo.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()

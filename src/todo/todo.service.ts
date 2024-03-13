@@ -60,6 +60,6 @@ export class TodoService {
   }
 
   async delete(id: number): Promise<void> {
-    this.todoRepository.delete(id);
+    await this.todoRepository.delete(id);
   }
 }

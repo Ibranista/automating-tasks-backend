@@ -1,5 +1,11 @@
 import { Task } from '../../task/entities/task.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Todo {
@@ -14,7 +20,9 @@ export class Todo {
 
   @OneToMany(() => Task, (task) => task.todo, {
     cascade: true,
+    onDelete: 'CASCADE',
   })
+  @JoinColumn()
   tasks: Task[];
 
   @Column({ default: true })
