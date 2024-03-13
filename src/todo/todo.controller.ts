@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { Todo } from './entities/todo.entity';
@@ -32,9 +33,9 @@ export class TodoController {
     return await this.todoService.create(todoDto);
   }
 
-  @Put('/update-complete/:name')
+  @Put('/update-complete')
   async updateIsCompleteTodo(
-    @Param('name') name: string,
+    @Query('name') name: string,
     @Body() updateTodoCompleteDto: UpdateTodoCompleteDto,
   ): Promise<Todo> {
     return await this.todoService.updateIsComplete(name, updateTodoCompleteDto);

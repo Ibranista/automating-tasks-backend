@@ -22,10 +22,12 @@ export class TodoService {
     name: string,
     updateTodoCompleteDto: UpdateTodoCompleteDto,
   ): Promise<any> {
+    console.log('updateTodoCompleteDto-->', updateTodoCompleteDto);
     const todoToUpdate = await this.todoRepository.findOneBy({ name });
 
     if (todoToUpdate) {
-      const completeResult = await this.todoRepository.update(
+      console.log('has matched!!!');
+      const updated = await this.todoRepository.update(
         { name },
         updateTodoCompleteDto,
       );
@@ -33,8 +35,8 @@ export class TodoService {
       if (updateTodoCompleteDto.isCompleted) {
         await this.taskService.updateIsComplete(todoToUpdate.id);
       }
+      return updated;
     }
-
     return todoToUpdate;
   }
 
