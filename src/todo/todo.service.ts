@@ -6,6 +6,7 @@ import { TodoDto } from './dtos/todo.dto';
 import { UpdateTodoDto } from './dtos/updateTodo.dto';
 import { UpdateTodoCompleteDto } from './dtos/updateComplete.dto';
 import { TaskService } from 'src/task/task.service';
+import axios from 'axios';
 @Injectable()
 export class TodoService {
   constructor(
@@ -16,6 +17,20 @@ export class TodoService {
 
   async findAll(): Promise<Todo[]> {
     return this.todoRepository.find({ relations: { tasks: true } });
+  }
+
+  async triggerWebHookWorkflow(name: string, isComplted: boolean = false) {
+    await axios
+      .post('https://theprogrammer1.app.n8n.cloud/webhook-test/name', {
+        name: 'hello',
+        isCompleted: isComplted,
+      })
+      .then((response) => {
+        console.log('Response:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }
 
   async updateIsComplete(
@@ -31,6 +46,15 @@ export class TodoService {
         { name },
         updateTodoCompleteDto,
       );
+
+      try {
+        await this.triggerWebHookWorkflow(
+          name,
+          updateTodoCompleteDto.isCompleted,
+        );
+      } catch (e) {
+        console.log({ e });
+      }
 
       if (updateTodoCompleteDto.isCompleted) {
         await this.taskService.updateIsComplete(todoToUpdate.id);
