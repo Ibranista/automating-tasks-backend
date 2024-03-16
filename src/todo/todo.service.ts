@@ -7,6 +7,7 @@ import { UpdateTodoDto } from './dtos/updateTodo.dto';
 import { UpdateTodoCompleteDto } from './dtos/updateComplete.dto';
 import { TaskService } from 'src/task/task.service';
 import axios from 'axios';
+import { TaskDto } from 'src/task/dtos/task.dto';
 @Injectable()
 export class TodoService {
   constructor(
@@ -14,6 +15,21 @@ export class TodoService {
     private todoRepository: Repository<Todo>,
     private readonly taskService: TaskService,
   ) {}
+
+  async createTodoWithTasks(todoDto: TodoDto, tasks: TaskDto[]) {
+    const createdTodo = await this.create(todoDto);
+    console.log('tasks--->', tasks);
+    const createdTasks = await Promise.all(
+      tasks['tasks'].map((taskDto) =>
+        this.taskService.create({
+          ...taskDto,
+          todo: createdTodo.id,
+        }),
+      ),
+    );
+    createdTodo.tasks = createdTasks;
+    return createdTodo;
+  }
 
   async findAll(): Promise<Todo[]> {
     return this.todoRepository.find({ relations: { tasks: true } });

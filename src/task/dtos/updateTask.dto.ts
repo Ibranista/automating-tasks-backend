@@ -7,6 +7,9 @@ export class UpdateTaskDto {
   name: string;
 
   @IsOptional()
+  trelloId: string;
+
+  @IsOptional()
   todoId: number;
 
   @IsBoolean()

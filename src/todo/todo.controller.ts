@@ -13,6 +13,7 @@ import { Todo } from './entities/todo.entity';
 import { TodoDto } from './dtos/todo.dto';
 import { UpdateTodoDto } from './dtos/updateTodo.dto';
 import { UpdateTodoCompleteDto } from './dtos/updateComplete.dto';
+import { TaskDto } from 'src/task/dtos/task.dto';
 
 @Controller('todos')
 export class TodoController {
@@ -31,6 +32,18 @@ export class TodoController {
   @Post()
   async createTodo(@Body() todoDto: TodoDto): Promise<Todo> {
     return await this.todoService.create(todoDto);
+  }
+
+  @Post('/create-todo-with-tasks')
+  async createTodoWithTasks(
+    @Body() todoDto: TodoDto,
+    @Body() tasks: TaskDto[],
+  ) {
+    const createdTodo = await this.todoService.createTodoWithTasks(
+      todoDto,
+      tasks,
+    );
+    return createdTodo;
   }
 
   @Put('/update-complete')

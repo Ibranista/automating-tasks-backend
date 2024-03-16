@@ -9,8 +9,11 @@ export class Task {
   @Column()
   name: string;
 
+  @Column({ default: '' })
+  trelloId: string;
+
   @ManyToOne(() => Todo, (todo) => todo.tasks)
-  todo: number;
+  todo: number | any;
 
   @Column({ default: true })
   isActive: boolean;

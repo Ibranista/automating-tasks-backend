@@ -13,11 +13,12 @@ export class TaskService {
   ) {}
 
   async findAll(): Promise<Task[]> {
-    return this.taskRepository.find();
+    return await this.taskRepository.find();
   }
 
   async findOne(id: number): Promise<Task> {
-    return this.taskRepository.findOneBy({ id });
+    const task = await this.taskRepository.findOneBy({ id });
+    return task;
   }
 
   async create(task: TaskDto): Promise<Task> {
@@ -27,6 +28,7 @@ export class TaskService {
   }
 
   async update(id: number, task: UpdateTaskDto): Promise<Task> {
+    console.log('task-->', task);
     await this.taskRepository.update(id, task);
     return this.taskRepository.findOneBy({ id });
   }
