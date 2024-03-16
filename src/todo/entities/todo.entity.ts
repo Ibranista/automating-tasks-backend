@@ -5,9 +5,11 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   JoinColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity()
+@Unique(['name']) // Adding Unique constraint on the name column
 export class Todo {
   @PrimaryGeneratedColumn()
   id: number;

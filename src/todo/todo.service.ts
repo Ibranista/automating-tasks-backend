@@ -17,18 +17,39 @@ export class TodoService {
   ) {}
 
   async createTodoWithTasks(todoDto: TodoDto, tasks: TaskDto[]) {
-    const createdTodo = await this.create(todoDto);
-    console.log('tasks--->', tasks);
-    const createdTasks = await Promise.all(
-      tasks['tasks'].map((taskDto) =>
-        this.taskService.create({
-          ...taskDto,
-          todo: createdTodo.id,
-        }),
-      ),
-    );
-    createdTodo.tasks = createdTasks;
-    return createdTodo;
+    try {
+      const createdTodo = await this.create(todoDto);
+
+      const createdTasks = await Promise.all(
+        tasks['tasks'].map((taskDto) =>
+          this.taskService.create({
+            ...taskDto,
+            todo: createdTodo.id,
+          }),
+        ),
+      );
+
+      createdTodo.tasks = createdTasks;
+
+      await axios
+        .post(
+          'https://theprogrammer1.app.n8n.cloud/webhook-test/todos-created',
+          {
+            todos: createdTodo,
+          },
+        )
+        .then((response) => {
+          console.log('Response:', response.data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+
+      return createdTodo;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   async findAll(): Promise<Todo[]> {
