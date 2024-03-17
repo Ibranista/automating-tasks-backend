@@ -37,15 +37,12 @@ export class TaskService {
   }
 
   async updateCheckListTrelloId(todoId: number, IdCard: string) {
-    const theTodoId = 1;
-    const cardId = '65f6764d54a2d2c708f08bcd';
     let checkListId = null;
     const todoById = await this.todoRepository.find({
-      where: { id: theTodoId },
+      where: { id: todoId },
       relations: ['tasks'],
     });
     const tasks = todoById[0].tasks;
-    console.log('tasks-->', tasks);
     // create a checklist in trello
     await axios
       .post('https://api.trello.com/1/checklists', {
@@ -53,7 +50,7 @@ export class TaskService {
         token:
           'ATTA7ecdeb8b42b161f0e209dd835c6e39b1b1c8a50060dacd6d592888590420f9a1527DC09D',
         name: 'Checklist',
-        idCard: cardId,
+        idCard: IdCard,
       })
       .then((response) => (checkListId = response.data.id));
 
