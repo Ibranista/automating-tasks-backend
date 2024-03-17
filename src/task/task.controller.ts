@@ -39,6 +39,14 @@ export class TaskController {
     return await this.taskService.update(id, updateTaskDto);
   }
 
+  @Put('/update-checklist-trello-id/:todoId')
+  async updateCheckListTrelloId(
+    @Param('todoId') id: number,
+    @Body('idCard') trelloId: string,
+  ): Promise<void> {
+    return await this.taskService.updateCheckListTrelloId(id, trelloId);
+  }
+
   @Delete(':id')
   async deleteTask(@Param('id') id: number): Promise<void> {
     return await this.taskService.delete(id);

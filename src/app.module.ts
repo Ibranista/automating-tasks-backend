@@ -23,6 +23,7 @@ import { join } from 'path';
         entities: [join(process.cwd(), 'dist/**/*.entity{.ts,.js}')],
         synchronize: true,
         ssl: { rejectUnauthorized: false },
+        autoLoadEntities: true,
       }),
     }),
     TodoModule,
