@@ -46,9 +46,8 @@ export class TaskService {
     // create a checklist in trello
     await axios
       .post('https://api.trello.com/1/checklists', {
-        key: 'c692be5f870d73e81f2224a02fef9dcc',
-        token:
-          'ATTA7ecdeb8b42b161f0e209dd835c6e39b1b1c8a50060dacd6d592888590420f9a1527DC09D',
+        key: process.env.TRELLO_KEY,
+        token: process.env.TRELLO_TOKEN,
         name: 'Checklist',
         idCard: IdCard,
       })
@@ -60,9 +59,8 @@ export class TaskService {
         await axios.post(
           'https://api.trello.com/1/checklist/' + checkListId + '/checkItems',
           {
-            key: 'c692be5f870d73e81f2224a02fef9dcc',
-            token:
-              'ATTA7ecdeb8b42b161f0e209dd835c6e39b1b1c8a50060dacd6d592888590420f9a1527DC09D',
+            key: process.env.TRELLO_KEY,
+            token: process.env.TRELLO_TOKEN,
             name: task.name,
           },
         );
